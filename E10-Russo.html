@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en"> 
+    <meta charset="UTF-8">
+    <head> 
+        <title>E06- Fridge App</title>
+        <style> 
+            body{background-color: rgb(232, 222, 224);}
+            div{float:center; width: 50%; 
+                border-width:2px; border: solid black; 
+                padding: 5px 5px 5px 5px;  margin :10px,10px,10px,10px;}
+            
+          
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <p>Thermostat<p>
+            <div class="temperature">
+                <span>Current Temperature: <span id="current-temp">20</span>°C</span>
+                <button class="button" onclick="increaseTemp()">+</button>
+                <button class="button" onclick="decreaseTemp()">-</button>
+                
+            </div>
+
+        </div>
+        <div class="container">
+            <h4>Weather for the Day</h4>
+            <div class="weather">
+                <span>Outside Temperature: <span id="outTemperature"></span></span>
+                <span>Conditions: <span id="conditions"></span></span>
+            </div>
+            <button class="button" onclick="getWeather()">Get Weather</button>
+        </div>
+
+    
+
+   
+                     
+       
+        <div id="div3" class="div-3" >
+           <img src="https://community.usa.canon.com/t5/image/serverpage/image-id/8218iBEAE12A7A45C909D?v=1.0"
+                 id="image1" width=200px heigth=200px> 
+        </div>
+        <div id="clock"></div>
+        <div>
+            <p>Timer</p>
+            <label for="minutes">Minutes:</label>
+            <input type="number" id="minutes" min="0" max="59" step="1" value="0">
+            <label for="seconds">Seconds:</label>
+            <input type="number" id="seconds" min="0" max="59" step="1" value="0">
+            <button onclick="startTimer()">Start Timer</button>
+            <button onclick="resetTimer()">Reset Timer</button>
+            <div id="timer"></div>
+        </div>
+
+        <div>
+        <button onclick="setTimeFormat(12)">12 Hour Format</button>
+        <button onclick="setTimeFormat(24)">24 Hour Format</button>
+        </div>
+        <div id="div4" class="div-4"> 
+            <ul id="grocery-list">
+                <li>Apples</li>
+                <li>Pork</li>
+                <li>Oranges</li>
+                <li>Olives</li>
+                <li>Pickles</li>
+            </ul>
+
+            <input type="text" id="new-item">
+            <button onclick="addItem()">Add Item</button>
+            <button onclick="removeItem()">Remove Item</button>
+        </div>
+        
+        
+        <div id="buttons">
+           
+           <input type=button onclick="button2()" id="button2" value="Look Inside" >
+           <input type=button onclick="button3()" id="button3" value="Close Fridge">
+           <input type=button onclick="button4()" id="button4" value="TV ON">
+           <input type=button onclick="button3()" id="button3" value="TV OFF">
+           <input type=button onclick="button6()" id="button6" value="Music">
+           <input type=button onclick="button7()" id="button7" value="Google"> 
+           <input type=button onclick="button3()" id="button3" value="Turn Off">
+        </div> 
+    </body>
+        <footer> 
+            <hr>
+            <small>&copy; J. Russo, April 09,2023</small>
+        </footer>
+        <script>
+            const outTemperature = document.getElementById('outTemperature');
+		    const conditions = document.getElementById('conditions');
+            const weatherOptions = [
+			{ outTemperature: 70, conditions: "sunny" },
+			{ outTemperature: 53, conditions: "rainy" },
+			{ outTemperature: 20, conditions: "snowing" },
+            { outTemperature: 37, conditions: "snow and rain" },
+            { outTemperature: 5, conditions: "snow and ice" },
+            { outTemperature: 89, conditions: "hot and sunny" },
+			{ outTemperature: 65, conditions: "cloudy" }
+		];
+        function getWeather() {
+			// Get a random index from the weather options array
+			const randomIndex = Math.floor(Math.random() * weatherOptions.length);
+			const weather = weatherOptions[randomIndex];
+			
+			// Update the temperature and conditions elements with the selected weather
+			outTemperature.textContent = `${weather.outTemperature}°F`;
+			conditions.textContent = weather.conditions;
+		}
+    
+            const currentTemp = document.getElementById('current-temp');
+		
+		// Define the initial temperature and step size for temperature changes
+		
+		const step = 1;
+        var temperature = 20; // initial temperature in Celsius
+		var temperatureElement = document.getElementById("temperature");
+		var temperatureFElement = document.getElementById("temperature-f");
+		var units = "C"; // initial units
+
+      
+		// Function to increase the temperature by the step size
+		function increaseTemp() {
+			temperature += step;
+			updateTemperature();
+		}
+		
+		// Function to decrease the temperature by the step size
+		function decreaseTemp() {
+			temperature -= step;
+			updateTemperature();
+		}
+		
+		// Function to update the current temperature element with the new temperature
+		function updateTemperature() {
+			currentTemp.textContent = temperature;
+		}
+        
+        
+            var timerInterval = null;
+            var secondsLeft = 0;
+
+            function startTimer() {
+                var minutes = parseInt(document.getElementById("minutes").value);
+                var seconds = parseInt(document.getElementById("seconds").value);
+                secondsLeft = minutes * 60 + seconds;
+
+                if (secondsLeft > 0 && !timerInterval) {
+                    timerInterval = setInterval(updateTimer, 1000);
+                }
+            }
+
+            function updateTimer() {
+                secondsLeft--;
+                var minutes = Math.floor(secondsLeft / 60);
+                var seconds = secondsLeft % 60;
+
+                document.getElementById("timer").innerHTML = minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
+
+                if (secondsLeft == 0) {
+                    clearInterval(timerInterval);
+                    timerInterval = null;
+                }
+            }
+            function resetTimer() {
+                clearInterval(timerInterval);
+                timerInterval = null;
+                secondsLeft = 0;
+                document.getElementById("timer").innerHTML = "";
+                document.getElementById("minutes").value = "0";
+                document.getElementById("seconds").value = "0";
+            }
+        function displayTime() {
+            var time = new Date();
+            var hours = time.getHours();
+            var minutes = time.getMinutes();
+            var seconds = time.getSeconds();
+            var format = (time.getHours() >= 12) ? "PM" : "AM";
+  
+            if(timeFormat == 12) {
+                hours = (hours > 12) ? hours - 12 : hours;
+            }
+
+            hours = (hours < 10) ? "0" + hours : hours;
+            minutes = (minutes < 10) ? "0" + minutes : minutes;
+            seconds = (seconds < 10) ? "0" + seconds : seconds;
+  
+            var currentTime = hours + ":" + minutes + ":" + seconds + " " + format;
+
+            document.getElementById("clock").innerText = currentTime;
+  
+                setTimeout(displayTime, 1000);
+            }
+
+            var timeFormat = 24;
+            displayTime();
+
+            function setTimeFormat(format) {
+                timeFormat = format;
+            }
+            function addItem() {
+				var input = document.getElementById("new-item");
+				var item = input.value;
+				if (item !== "") {
+					var list = document.getElementById("grocery-list");
+					var li = document.createElement("li");
+					li.appendChild(document.createTextNode(item));
+					list.appendChild(li);
+					input.value = "";
+				}
+			}
+            function removeItem() {
+				var list = document.getElementById("grocery-list");
+				var items = list.getElementsByTagName("li");
+				for (var i = 0; i < items.length; i++) {
+					var item = items[i];
+					if (item.innerHTML.toLowerCase() === prompt("Enter item to remove").toLowerCase()) {
+						list.removeChild(item);
+						break;
+					}
+				}
+			}
+        
+        
+        function button2(){ 
+            var pic=document.getElementById('image1');
+            pic.src="https://wilshirerefrigeration.com/wp-content/uploads/2020/07/Open-Refrigerator-With-Food-Inside-scaled.jpg";
+
+        }
+        function button3(){ 
+            var pic=document.getElementById('image1');
+            pic.src="https://community.usa.canon.com/t5/image/serverpage/image-id/8218iBEAE12A7A45C909D?v=1.0";
+
+        }
+        function button4(){ 
+            var pic=document.getElementById('image1');
+            pic.src="https://www.refinery29.com/images/10240851.jpg?crop=40:21";
+
+        }
+        function button5(){ 
+            var pic=document.getElementById('image1');
+            pic.src="https://pisces.bbystatic.com/image2/BestBuy_US/images/products/7755/7755253_ra.jpg";
+
+        }
+        function button6(){ 
+            var pic=document.getElementById('image1');
+            pic.src="https://media.wired.com/photos/5926d35ccfe0d93c47431806/191:100/pass/SpotifyHP.jpg";
+
+        }
+        function button7(){ 
+            var pic=document.getElementById('image1');
+            pic.src="https://images.idgesg.net/images/article/2018/09/google-search-bar-100773887-orig.jpg";
+
+        }
+        
+        </script>
+
+    </body>
+    
+</html>
