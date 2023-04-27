@@ -1,0 +1,28 @@
+.crumbs {
+    padding: 10px;
+    font-family: Arial;
+}
+
+.crumb_item {
+    display: inline-block;
+}
+
+.crumb_item:not(:last-of-type)::after {
+    content: ">";
+    margin: 0 5px;
+    color: #cccccc
+}
+
+.crumblink {
+    text-decoration: none;
+    color: #7e128a
+}
+
+.crumblink:hover {
+    text-decoration: underline;
+}
+
+.crumblink--active {
+    color: #4d41f6;
+    font-weight: 500;
+}
